@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vili</title>
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Tailwind CSS (Pre-compiled fallback for mobile WebView / Acode compatibility) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+  <!-- Tailwind CSS JIT (Active compiler for modern environments) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    if (window.tailwind) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            }
+          }
+        }
+      };
+    }
+  </script>
+
+  <style>
+    /* Remove default blue outline and tap rectangle */
+button, a, [role="button"] {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+button:focus, a:focus, [role="button"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+    /* ==========================================================================
+       1. BASE STYLES & TYPOGRAPHY
+       ========================================================================== */
+    body {
+      font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #1E1E1E;
+      background-color: #F8F9FA;
+      margin: 0;
+      padding: 0;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ==========================================================================
+       2. ACODE FALLBACK: ARBITRARY CLASSES (Ensures layout never breaks)
+       ========================================================================== */
+    .bg-\[\#F8F9FA\] { background-color: #F8F9FA !important; }
+    .bg-\[\#1A1A1A\] { background-color: #1A1A1A !important; }
+    .text-\[\#111111\] { color: #111111 !important; }
+    .text-\[\#161616\] { color: #161616 !important; }
+    .text-\[\#1E1E1E\] { color: #1E1E1E !important; }
+    .text-\[\#1A1F71\] { color: #1A1F71 !important; }
+    .text-\[\#003087\] { color: #003087 !important; }
+
+    .max-w-\[1240px\] { max-width: 1240px !important; }
+    .max-w-\[200px\] { max-width: 200px !important; }
+    .max-w-\[60px\] { max-width: 60px !important; }
+    .max-h-\[620px\] { max-height: 620px !important; }
+    .min-h-\[52px\] { min-height: 52px !important; }
+    .min-w-\[16px\] { min-width: 16px !important; }
+
+    .aspect-\[4\/5\] { aspect-ratio: 4 / 5 !important; }
+    .aspect-\[16\/10\] { aspect-ratio: 16 / 10 !important; }
+    .aspect-square { aspect-ratio: 1 / 1 !important; }
+
+    .text-\[9px\] { font-size: 9px !important; line-height: 12px !important; }
+    .text-\[10px\] { font-size: 10px !important; line-height: 14px !important; }
+    .text-\[11px\] { font-size: 11px !important; line-height: 15px !important; }
+    .text-\[12px\] { font-size: 12px !important; line-height: 16px !important; }
+    .text-\[14px\] { font-size: 14px !important; line-height: 20px !important; }
+    .sm\:text-\[13px\] { font-size: 13px !important; }
+
+    .w-\[22px\] { width: 22px !important; }
+    .h-\[22px\] { height: 22px !important; }
+    .w-\[0\%\] { width: 0% !important; }
+    .w-\[2\%\] { width: 2% !important; }
+    .w-\[5\%\] { width: 5% !important; }
+    .w-\[15\%\] { width: 15% !important; }
+    .w-\[85\%\] { width: 85% !important; }
+
+    .stroke-\[2\] { stroke-width: 2 !important; }
+    .stroke-\[2\.5\] { stroke-width: 2.5 !important; }
+
+    /* CTA Buttons Full Compatibility */
+    #buy-btn, #cart-checkout-btn, #upsell-accept {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 48px !important;
+      background-color: #1A1A1A !important;
+      color: #ffffff !important;
+      border-radius: 9999px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      border: none !important;
+      transition: background-color 0.15s ease, transform 0.15s ease !important;
+      text-decoration: none !important;
+    }
+    #buy-btn:hover, #cart-checkout-btn:hover, #upsell-accept:hover {
+      background-color: #000000 !important;
+    }
+    #buy-btn:active, #cart-checkout-btn:active, #upsell-accept:active {
+      transform: scale(0.99) !important;
+    }
+
+    /* ==========================================================================
+       3. SLIDER, CART, AND UPSELL ANIMATIONS & STYLES
+       ========================================================================== */
+    .slider-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 25;
+      width: 32px; height: 32px; border-radius: 9999px; border: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.35); color: #fff;
+      opacity: 0.5; transition: opacity .2s ease, background .2s ease, transform .15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .slider-arrow:hover { opacity: 0.85; background: rgba(0,0,0,0.5); }
+    .slider-arrow:active { transform: translateY(-50%) scale(0.92); }
+    .slider-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; opacity: 0.9; }
+    .slider-arrow.left { left: 10px; }
+    .slider-arrow.right { right: 10px; }
+    .slider-arrow svg { width: 16px; height: 16px; }
+    @media (min-width: 640px) {
+      .slider-arrow { width: 36px; height: 36px; }
+      .slider-arrow.left { left: 14px; }
+      .slider-arrow.right { right: 14px; }
+    }
+
+    /* Cart */
+    .cart-backdrop {
+      position: fixed; inset: 0; z-index: 55; background: rgba(0,0,0,0.4);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s;
+    }
+    #enlarge-modal {
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+    .cart-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity .3s ease, visibility 0s; }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 380px; z-index: 56;
+      background: #fff; display: flex; flex-direction: column;
+      box-shadow: -10px 0 40px rgba(0,0,0,0.18);
+      transform: translateX(100%); visibility: hidden;
+      transition: transform .3s ease-in-out, visibility 0s linear .3s;
+    }
+    .cart-drawer.is-open { transform: translateX(0); visibility: visible; transition: transform .3s ease-in-out, visibility 0s; }
+    @keyframes badge-pop { 0% { transform: scale(1); } 50% { transform: scale(1.35); } 100% { transform: scale(1); } }
+    .badge-pop { animation: badge-pop .3s ease; }
+
+    /* Upsell Modal */
+    .upsell-overlay {
+      position: fixed; inset: 0; z-index: 60;
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; background: rgba(0,0,0,0.5);
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+      opacity: 0; transition: opacity .25s ease;
+    }
+    .upsell-overlay.is-visible { display: flex; }
+    .upsell-overlay.is-open { opacity: 1; }
+    .upsell-card {
+      position: relative; width: 100%; max-width: 420px; max-height: calc(100vh - 32px); overflow-y: auto;
+      background: #fff; border-radius: 28px; padding: 20px;
+      box-shadow: 0 25px 60px -12px rgba(0,0,0,0.35);
+      transform: translateY(16px) scale(0.97); transition: transform .25s ease;
+    }
+    .upsell-overlay.is-open .upsell-card { transform: translateY(0) scale(1); }
+    body.modal-open { overflow: hidden; }
+  </style>
+</head>
+<body class="bg-[#F8F9FA] text-[#1E1E1E]">
+
+  <!-- Mobile / Slide Drawer Navigation Menu -->
+  <div id="menu-backdrop" onclick="toggleMenu()" class="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-300"></div>
+  <aside id="menu-drawer" class="fixed top-0 left-0 h-full w-64 bg-white z-50 shadow-2xl p-6 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-6 border-b border-zinc-100">
+        <span class="text-xl font-bold tracking-tight text-[#161616]">Vili</span>
+        <button type="button" onclick="toggleMenu()" class="p-1 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition" aria-label="Close menu">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <nav class="mt-8 flex flex-col space-y-4">
+        <a href="#" data-home-link class="px-4 py-3 rounded-xl font-semibold text-sm text-zinc-800 hover:bg-zinc-100 transition flex items-center justify-between">
+          <span>Home</span>
+          <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        <a href="https://nandekudhe.github.io/Footer/" class="px-4 py-3 rounded-xl font-semibold text-sm text-zinc-800 hover:bg-zinc-100 transition flex items-center justify-between">
+          <span>Contact</span>
+          <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      </nav>
+    </div>
+    <div class="text-[11px] text-zinc-400 border-t border-zinc-100 pt-4">
+      Vili Storefront
+    </div>
+  </aside>
+
+  <div class="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    
+    <!-- 1. HEADER SECTION -->
+    <header class="pb-4">
+      <div class="relative flex items-center justify-between h-14">
+        <!-- Hamburger Icon -->
+        <button type="button" aria-label="Open menu" onclick="toggleMenu()" class="p-2 -ml-2 text-zinc-800 hover:text-black transition">
+          <svg class="w-6 h-6 stroke-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="3" y1="7" x2="21" y2="7"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+          </svg>
+        </button>
+
+        <!-- Logo -->
+        <div class="cursor-pointer absolute left-1/2 -translate-x-1/2">
+          <span class="text-xl font-bold tracking-tight text-[#161616]">Vili</span>
+        </div>
+
+        <!-- Right Navigation Links -->
+        <div class="flex items-center space-x-6">
+          <a href="#" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">About</a>
+          <a href="#" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">FAQs</a>
+
+          <!-- Cart icon -->
+          <button type="button" id="cart-btn" aria-label="Open cart" class="relative p-2 -mr-2 text-zinc-800 hover:text-black transition">
+            <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle><path d="M2 3h2.6l2.5 12.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2L20.5 7H5.4"></path></svg>
+            <span id="cart-badge" class="hidden absolute top-0.5 right-0 min-w-[16px] h-4 px-1 rounded-full bg-[#1A1A1A] text-white text-[10px] font-bold leading-none flex items-center justify-center border border-white">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="pt-0 pb-0 flex items-center space-x-2 text-xs font-normal text-zinc-500">
+      <a href="#" id="home-link" data-home-link class="flex items-center hover:text-zinc-800 transition">
+        <svg class="w-3 h-3 mr-1.5 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>Home</span>
+      </a>
+      <span>•</span>
+      <span class="text-zinc-400">Product details</span>
+    </div>
+
+    <!-- 2. PRODUCT DETAIL SECTION -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 mt-4 items-start">
+      
+      <!-- Left: Interactive Gallery -->
+      <div class="md:col-span-7 flex flex-col items-center">
+        <div id="showcase" style="aspect-ratio: 4 / 5; width: 100%; min-height: 380px;" class="relative w-full aspect-[4/5] max-h-[620px] rounded-3xl overflow-hidden bg-zinc-200 shadow-sm border border-zinc-100">
+
+          <!-- Navigation arrows -->
+          <button type="button" id="slider-prev" class="slider-arrow left" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button type="button" id="slider-next" class="slider-arrow right" aria-label="Next image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+
+          <!-- Top subtle dash indicators -->
+          <div class="absolute top-4 inset-x-0 z-20 flex justify-center items-center space-x-2 px-6">
+            <span id="indicator-0" class="relative overflow-hidden h-1 rounded-full flex-1 max-w-[60px] bg-white/40 backdrop-blur-sm shadow-sm"><span id="slider-fill-0" class="absolute inset-y-0 left-0 w-0 rounded-full bg-white"></span></span>
+            <span id="indicator-1" class="relative overflow-hidden h-1 rounded-full flex-1 max-w-[60px] bg-white/40 backdrop-blur-sm shadow-sm"><span id="slider-fill-1" class="absolute inset-y-0 left-0 w-0 rounded-full bg-white"></span></span>
+            <span id="indicator-2" class="relative overflow-hidden h-1 rounded-full flex-1 max-w-[60px] bg-white/40 backdrop-blur-sm shadow-sm"><span id="slider-fill-2" class="absolute inset-y-0 left-0 w-0 rounded-full bg-white"></span></span>
+          </div>
+          <!-- Enlarge Button -->
+<button type="button" onclick="openEnlargeModal()" aria-label="Enlarge image" 
+        class="absolute bottom-4 right-4 z-30 w-9 h-9 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center border border-white/20 shadow-md hover:bg-black/70 active:scale-95 transition cursor-pointer pointer-events-auto">
+  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 3 21 3 21 9"></polyline>
+    <polyline points="9 21 3 21 3 15"></polyline>
+    <line x1="21" y1="3" x2="14" y2="10"></line>
+    <line x1="3" y1="21" x2="10" y2="14"></line>
+  </svg>
+</button>
+
+
+          <!-- Main Image -->
+          <img id="main-product-img" 
+               src="Result.png" 
+               alt="How to Make Money with Just 500 Followers?" 
+               class="w-full h-full object-cover object-top transition-opacity duration-300">
+
+          <!-- Floating quick thumbnails inside lower image card -->
+<div class="absolute bottom-4 inset-x-4 z-20 flex justify-center items-center gap-2">
+  <button onclick="changeImage(0)" class="thumb-btn ring-2 ring-white/90 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
+    <img src="Result.png">
+  </button>
+  <button onclick="changeImage(1)" class="thumb-btn ring-0 opacity-80 hover:opacity-100 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
+    <img src="cover.png">
+  </button>
+  <button onclick="changeImage(2)" class="thumb-btn ring-0 opacity-80 hover:opacity-100 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
+    <img src="aview.png">
+  </button>
+</div>
+
+        </div>
+      </div>
+
+      <!-- Right: Product Information & Controls -->
+      <div class="md:col-span-5 flex flex-col justify-start pt-1">
+        
+        <!-- Category Tag -->
+        <div>
+          <span class="inline-block px-3 py-1 bg-zinc-100 text-[11px] font-medium text-zinc-600 rounded-full mb-3 border border-zinc-200">
+            Premium Item
+          </span>
+        </div>
+
+        <!-- Product Title -->
+        <h1 class="text-3xl font-extrabold tracking-tight text-[#111111]">
+          Make Money with Just 500 Followers!
+        </h1>
+
+        <!-- Price -->
+        <div id="price-block" class="mt-2">
+          <!-- Single-product pricing -->
+          <div id="price-single" class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span id="price-current" class="text-3xl font-extrabold tracking-tight text-zinc-900">₹249</span>
+            <span id="price-original" class="text-base text-zinc-400 line-through font-normal">₹996</span>
+            <span id="price-badge" class="text-[11px] font-bold text-red-500 bg-red-50 px-2 py-1 rounded-full">75% OFF</span>
+          </div>
+          <!-- Bundle pricing -->
+          <div id="price-bundle" class="hidden">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span id="bundle-total" class="text-3xl font-extrabold tracking-tight text-zinc-900">₹398</span>
+              <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">BUNDLE TOTAL</span>
+            </div>
+            <p id="bundle-breakdown" class="mt-1 text-xs text-zinc-500"></p>
+          </div>
+        </div>
+
+        <!-- Next Day Countdown Pill -->
+        <div class="mt-4 flex items-center px-3.5 py-2.5 bg-white border border-zinc-200 rounded-full shadow-xs w-full">
+          <svg class="w-4 h-4 text-zinc-500 mr-2 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <p class="text-[12px] text-zinc-600 leading-tight">
+            Offer ends in <span id="countdown" class="font-bold text-zinc-900">02:30:26</span> | Start your earning 💸
+          </p>
+        </div>
+
+        <!-- Buy CTA -->
+        <div class="mt-6 flex flex-col">
+          <!-- Bundle preview -->
+          <div id="bundle-preview" class="hidden mb-4 p-3 bg-white border border-zinc-200 rounded-2xl shadow-xs">
+            <div class="flex items-start justify-center gap-3 sm:gap-4">
+              <!-- Main product -->
+              <div class="w-20 sm:w-24 min-w-0">
+                <div class="aspect-square rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
+                  <img id="preview-main-img" src="" alt="" class="w-full h-full object-cover object-top">
+                </div>
+                <p id="preview-main-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-tight text-center line-clamp-2"></p>
+
+              </div>
+
+              <!-- Plus sign -->
+              <div id="preview-plus" class="hidden self-start mt-7 sm:mt-9 text-zinc-400 text-lg font-bold leading-none select-none">+</div>
+
+              <!-- Upsell product -->
+              <div id="preview-upsell" class="hidden w-20 sm:w-24 min-w-0 relative">
+                <div class="aspect-square rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
+                  <img id="preview-upsell-img" src="" alt="" class="w-full h-full object-cover">
+                </div>
+                <button type="button" id="preview-upsell-remove" aria-label="Remove add-on from bundle" title="Remove" class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[#1A1A1A] hover:bg-black text-white border-2 border-white shadow-md flex items-center justify-center active:scale-90 transition">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+                </button>
+                <p id="preview-upsell-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-tight text-center line-clamp-2"></p>
+
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="buy-btn">
+            <span id="buy-btn-label">Buy Now</span>
+          </button>
+        </div>
+
+        <!-- Accordions: Description -->
+        <div class="mt-8 border-t border-zinc-200 divide-y divide-zinc-200">
+          <div class="py-4">
+            <button type="button" onclick="toggleAccordion('desc-body', 'desc-icon')" class="w-full flex items-center justify-between text-left group">
+              <span class="text-sm font-bold text-zinc-900 group-hover:text-black">Description</span>
+              <svg id="desc-icon" class="w-4 h-4 text-zinc-500 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            </button>
+            <div id="desc-body" class="mt-3 text-xs leading-relaxed text-zinc-500 pr-2">
+              Learn simple and practical ways to start making money from your Instagram audience, even if you have very few followers. Discover different ways to earn, find potential customers, and turn your content and audience into income. Whether you're just starting out or already creating content, this guide will help you understand how to get started and work toward your first online earning.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. RATING & REVIEWS SECTION -->
+<div class="mt-4 pt-4 border-t border-zinc-200">
+
+      <h2 class="text-xl font-bold tracking-tight text-zinc-900 mb-8">Rating & Reviews</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- Rating Numeric Breakdown -->
+        <div class="md:col-span-5 flex items-center space-x-6">
+          <div>
+            <div class="flex items-baseline space-x-1">
+              <span class="text-6xl font-extrabold tracking-tight text-[#161616]">4,5</span>
+              <span class="text-xl font-medium text-zinc-400">/ 5</span>
+            </div>
+            <p class="text-xs text-zinc-400 font-medium mt-1">(50 New Reviews)</p>
+          </div>
+
+          <div class="flex-1 space-y-1.5 max-w-[200px]">
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-amber-400 flex items-center">★</span>
+              <span class="text-[11px] font-semibold text-zinc-700 w-2">5</span>
+              <div class="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div class="h-full bg-zinc-900 rounded-full w-[85%]"></div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-amber-400 flex items-center">★</span>
+              <span class="text-[11px] font-semibold text-zinc-700 w-2">4</span>
+              <div class="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div class="h-full bg-zinc-900 rounded-full w-[15%]"></div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-amber-400 flex items-center">★</span>
+              <span class="text-[11px] font-semibold text-zinc-700 w-2">3</span>
+              <div class="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div class="h-full bg-zinc-900 rounded-full w-[5%]"></div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-amber-400 flex items-center">★</span>
+              <span class="text-[11px] font-semibold text-zinc-700 w-2">2</span>
+              <div class="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div class="h-full bg-zinc-900 rounded-full w-[2%]"></div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+              <span class="text-amber-400 flex items-center">★</span>
+              <span class="text-[11px] font-semibold text-zinc-700 w-2">1</span>
+              <div class="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div class="h-full bg-zinc-900 rounded-full w-[0%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Review Card -->
+        <div class="md:col-span-7 select-none" id="review-card-container">
+          <div class="relative bg-white border border-zinc-200 rounded-3xl p-6 sm:p-7 shadow-sm transition-opacity duration-300" id="review-card">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 id="review-author" class="font-bold text-sm text-zinc-900">Alex Mathio</h4>
+                <div id="review-stars" class="flex items-center space-x-1 text-amber-400 text-xs mt-1">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+              </div>
+              <span id="review-date" class="text-xs text-zinc-400 font-medium">13 Oct 2026</span>
+            </div>
+
+            <p id="review-text" class="mt-4 text-xs sm:text-[13px] text-zinc-600 leading-relaxed font-normal min-h-[52px]">
+              "Vili's dedication to sustainability and ethical practices resonates strongly with today's consumers, positioning the brand as a responsible choice in the fashion world."
+            </p>
+
+            <div class="mt-5 flex items-center justify-between">
+              <!-- Avatar -->
+              <img id="review-avatar" 
+                   src="Rev1.png" 
+                   alt="Reviewer" 
+                   class="w-10 h-10 rounded-full object-cover border border-zinc-200">
+
+              <!-- Carousel 4 Indicator Bars -->
+              <div class="flex items-center space-x-1.5" id="review-dots">
+                <span class="w-6 h-1 bg-zinc-900 rounded-full transition-all"></span>
+                <span class="w-6 h-1 bg-zinc-200 rounded-full transition-all"></span>
+                <span class="w-6 h-1 bg-zinc-200 rounded-full transition-all"></span>
+                <span class="w-6 h-1 bg-zinc-200 rounded-full transition-all"></span>
+              </div>
+
+              <!-- Next Review button -->
+              <button type="button" onclick="nextReview()" class="w-7 h-7 rounded-full border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-zinc-800 hover:border-zinc-400 transition" aria-label="Next review">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. YOU MIGHT ALSO LIKE SECTION -->
+    <div class="mt-10 md:mt-24">
+      <h2 class="text-2xl md:text-3xl font-extrabold text-center tracking-tight text-[#161616] mb-6 md:mb-12">
+        You might also like
+      </h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-4 sm:gap-6">
+        <!-- Product 1 -->
+        <a href="#" data-rec-link="1" class="group block cursor-pointer transition-transform duration-300 md:hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-zinc-900 focus-visible:outline-offset-4 rounded-3xl">
+          <div class="aspect-[4/5] bg-zinc-100 rounded-2xl sm:rounded-3xl overflow-hidden relative border border-zinc-100 transition duration-300 group-hover:shadow-md">
+            <img src="ycv.png" 
+                 alt="Youtube Creator Vault" 
+                 class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105">
+          </div>
+          <div class="mt-3.5 space-y-1">
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-black truncate">Youtuber Creator Vault</h3>
+            <div class="flex items-center space-x-1 text-xs">
+              <span class="text-amber-400">★</span>
+              <span class="text-zinc-500 text-[11px] font-medium">4.5/5</span>
+            </div>
+            <div class="flex items-center space-x-2 pt-0.5">
+              <span class="text-sm font-bold text-zinc-900">₹143</span>
+              <span class="text-xs text-zinc-400 line-through font-normal">₹179</span>
+              <span class="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-full">-20%</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 2 -->
+        <a href="#" data-rec-link="2" class="group block cursor-pointer transition-transform duration-300 md:hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-zinc-900 focus-visible:outline-offset-4 rounded-3xl">
+          <div class="aspect-[4/5] bg-zinc-100 rounded-2xl sm:rounded-3xl overflow-hidden relative border border-zinc-100 transition duration-300 group-hover:shadow-md">
+            <img src="uck.png" 
+                 alt="Universal Creator Kit" 
+                 class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105">
+          </div>
+          <div class="mt-3.5 space-y-1">
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-black truncate">Universal Creator Kit</h3>
+            <div class="flex items-center space-x-1 text-xs">
+              <span class="text-amber-400">★</span>
+              <span class="text-zinc-500 text-[11px] font-medium">4/5</span>
+            </div>
+            <div class="flex items-center space-x-2 pt-0.5">
+              <span class="text-sm font-bold text-zinc-900">₹99</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 5. FOOTER SECTION -->
+    <footer class="mt-12 md:mt-28 pt-8 md:pt-12 border-t border-zinc-200 pb-10">
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-8 pb-12">
+        <div class="col-span-2">
+          <div class="cursor-pointer mb-3">
+            <span class="text-lg font-bold tracking-tight text-[#161616]">Vili</span>
+          </div>
+          <p class="text-xs text-zinc-500 max-w-xs leading-relaxed">
+            We have products that suits your style and which you're proud to use.
+          </p>
+        </div>
+
+        <div>
+          <h5 class="text-[11px] font-bold text-zinc-900 tracking-wider uppercase mb-3">COMPANY</h5>
+          <ul class="space-y-2 text-xs text-zinc-500">
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">About</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Features</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Works</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Career</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-[11px] font-bold text-zinc-900 tracking-wider uppercase mb-3">HELP</h5>
+          <ul class="space-y-2 text-xs text-zinc-500">
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Customer Support</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Delivery Details</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Terms & Conditions</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-[11px] font-bold text-zinc-900 tracking-wider uppercase mb-3">FAQ</h5>
+          <ul class="space-y-2 text-xs text-zinc-500">
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Account</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Manage Deliveries</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Orders</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Payments</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-[11px] font-bold text-zinc-900 tracking-wider uppercase mb-3">RESOURCES</h5>
+          <ul class="space-y-2 text-xs text-zinc-500">
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Free eBooks</a></li>
+            <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Development Tutorial</a></li>
+            
+            
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-zinc-200 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
+        <p>Vili © 2026, All Rights Reserved</p>
+        
+        <div class="flex items-center space-x-2">
+          <div class="h-6 w-10 bg-white border border-zinc-200 rounded flex items-center justify-center font-bold italic text-[9px] text-[#1A1F71]">
+            VISA
+          </div>
+          <div class="h-6 w-10 bg-white border border-zinc-200 rounded flex items-center justify-center">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500 -mr-1 opacity-90"></span>
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 opacity-90"></span>
+          </div>
+          <div class="h-6 w-10 bg-white border border-zinc-200 rounded flex items-center justify-center font-bold text-[9px] text-[#003087] italic">
+            PayPal
+          </div>
+          <div class="h-6 w-10 bg-white border border-zinc-200 rounded flex items-center justify-center text-zinc-800 text-[10px] font-semibold">
+            Pay
+          </div>
+          <div class="h-6 w-10 bg-white border border-zinc-200 rounded flex items-center justify-center text-[10px] font-semibold text-zinc-700">
+            GPay
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- Enlarge Image Fullscreen Modal -->
+<div id="enlarge-modal" onclick="closeEnlargeModal()" 
+     class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0 cursor-zoom-out">
+  
+  <!-- Close Button -->
+  <button type="button" onclick="closeEnlargeModal()" aria-label="Close enlarged view" 
+          class="absolute top-5 right-5 z-50 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
+    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Enlarged Image -->
+  <img id="enlarged-img" src="" alt="Enlarged view" 
+       class="max-w-full max-h-[92vh] object-contain rounded-2xl shadow-2xl transition-transform duration-300 scale-95" 
+       onclick="event.stopPropagation()">
+</div>
+
+
+  <!-- Cart Drawer -->
+  <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
+      <h2 id="cart-title" class="text-lg font-bold tracking-tight text-[#161616]">Your cart <span id="cart-count-label" class="text-sm font-medium text-zinc-400"></span></h2>
+      <button type="button" id="cart-close" aria-label="Close cart" class="w-8 h-8 rounded-full text-zinc-400 hover:text-zinc-800 hover:bg-zinc-100 flex items-center justify-center transition">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-5 py-4">
+      <p id="cart-empty" class="hidden py-12 text-center text-sm text-zinc-400">Your cart is empty.</p>
+      <ul id="cart-items" class="space-y-3"></ul>
+
+      <div id="cart-addon" class="hidden mt-5 p-3 border border-dashed border-zinc-300 rounded-2xl">
+        <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">Add to your order</p>
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200">
+            <img id="cart-addon-img" src="" alt="" class="w-full h-full object-cover">
+          </div>
+          <div class="min-w-0 flex-1">
+            <p id="cart-addon-name" class="text-xs font-semibold text-zinc-800 truncate"></p>
+            <p id="cart-addon-price" class="text-xs text-zinc-500"></p>
+          </div>
+          <button type="button" id="cart-addon-btn" class="shrink-0 h-8 px-4 rounded-full bg-[#1A1A1A] hover:bg-black text-white text-xs font-semibold active:scale-95 transition">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="cart-footer" class="hidden px-5 py-4 border-t border-zinc-100 bg-white">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-sm font-medium text-zinc-500">Total</span>
+        <span id="cart-total" class="text-xl font-extrabold text-zinc-900"></span>
+      </div>
+      <button type="button" id="cart-checkout-btn"></button>
+    </div>
+  </aside>
+
+  <!-- Upsell Modal -->
+  <div id="upsell-overlay" class="upsell-overlay" role="dialog" aria-modal="true" aria-labelledby="upsell-title">
+    <div class="upsell-card">
+      <button type="button" id="upsell-close" aria-label="Close and continue with this product only" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/90 border border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 flex items-center justify-center transition shadow-sm">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <span class="inline-block px-3 py-1 bg-zinc-100 text-[11px] font-medium text-zinc-600 rounded-full mb-3 border border-zinc-200">Special one-time offer</span>
+
+      <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-100">
+        <img id="upsell-image" src="" alt="" class="w-full h-full object-cover">
+      </div>
+
+      <h3 id="upsell-title" class="mt-4 text-xl font-extrabold tracking-tight text-[#111111]"></h3>
+      <p id="upsell-desc" class="mt-1.5 text-xs leading-relaxed text-zinc-500"></p>
+
+      <div class="mt-4 flex items-center justify-between px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl">
+        <span class="text-xs font-medium text-zinc-500">Add to your order for just</span>
+        <span id="upsell-price" class="text-xl font-extrabold text-zinc-900"></span>
+      </div>
+
+      <button type="button" id="upsell-accept" class="mt-5">
+        Yes, Add This for Just ₹99
+      </button>
+      <button type="button" id="upsell-decline" class="mt-2 w-full h-11 text-xs font-semibold text-zinc-500 hover:text-zinc-900 rounded-full transition">
+        No thanks, continue with my current item
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       CONFIGURATION: edit the values in this block
+       ===================================================================== */
+    const HOME_URL = "https://nandekudhe.github.io/ViliHome/";
+    const CHECKOUT_URL_BOTH   = "https://payments.cashfree.com/forms/vili348";
+    const CHECKOUT_URL_SINGLE = "https://payments.cashfree.com/forms/vili249";
+    const RECOMMENDED_PRODUCT_1_URL = "https://nandekudhe.github.io/YCVP1/";
+    const RECOMMENDED_PRODUCT_2_URL = "https://visionmakes.netlify.app/product.html";
+
+    const PRODUCT_PRICE      = 249;
+    const DISCOUNT_PERCENT   = 75;
+
+    const UPSELL_PRODUCT_NAME        = "Want Your First Customer in Just 48 Hours?";
+    const UPSELL_PRODUCT_PRICE       = 99;
+    const UPSELL_PRODUCT_IMAGE       = "upsell.png" 
+      
+    const UPSELL_PRODUCT_DESCRIPTION = "Learn how to find your first customer in just 2 days with simple steps you can follow, even if you're starting from zero.";
+
+    const SLIDER_INTERVAL_MS = 6000;
+
+    /* =====================================================================
+       APP CODE
+       ===================================================================== */
+    // Safe Lucide initialization so preview never crashes if offline in Acode
+    if (window.lucide && typeof lucide.createIcons === 'function') {
+      try { lucide.createIcons(); } catch (e) { console.warn("Lucide fallback active"); }
+    }
+
+    // 1. Menu Drawer Logic
+    const menuDrawer = document.getElementById('menu-drawer');
+    const menuBackdrop = document.getElementById('menu-backdrop');
+    let isMenuOpen = false;
+
+    function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        menuBackdrop.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          menuBackdrop.classList.remove('opacity-0');
+          menuDrawer.classList.remove('-translate-x-full');
+        });
+      } else {
+        menuBackdrop.classList.add('opacity-0');
+        menuDrawer.classList.add('-translate-x-full');
+        setTimeout(() => {
+          menuBackdrop.classList.add('hidden');
+        }, 300);
+      }
+    }
+
+    // 2. Product Gallery / Showcase Slider
+    const galleryImages = [
+      "Result.png",
+      "cover.png",
+      "aview.png"
+    ];
+
+    const mainImgEl      = document.getElementById('main-product-img');
+    let currentSlide     = 0;
+    let sliderTimer      = null;
+    let swapTimeout      = null;
+
+    galleryImages.forEach(src => { const im = new Image(); im.src = src; });
+
+    const fillEls = galleryImages.map((_, i) => document.getElementById(`slider-fill-${i}`));
+
+        let isPaused = false;
+    let startTime = null;
+    let remainingTime = SLIDER_INTERVAL_MS;
+
+    function resetFills() {
+      fillEls.forEach(f => { if (f) { f.style.transition = 'none'; f.style.width = '0%'; } });
+    }
+
+    function restartSliderTimer() {
+      resetFills();
+      if (fillEls[0]) void fillEls[0].offsetWidth;
+      isPaused = false;
+      startSliderTimer(SLIDER_INTERVAL_MS);
+    }
+
+    function startSliderTimer(duration) {
+      clearTimeout(sliderTimer);
+      const fill = fillEls[currentSlide];
+      if (fill) {
+        fill.style.transition = `width ${duration}ms linear`;
+        fill.style.width = '100%';
+      }
+      startTime = Date.now();
+      remainingTime = duration;
+      sliderTimer = setTimeout(() => showSlide(currentSlide + 1), duration);
+    }
+
+    function pauseSlider() {
+      if (isPaused) return;
+      isPaused = true;
+      clearTimeout(sliderTimer);
+      const fill = fillEls[currentSlide];
+      if (fill) {
+        const computedWidth = window.getComputedStyle(fill).width;
+        fill.style.transition = 'none';
+        fill.style.width = computedWidth;
+      }
+      const elapsed = Date.now() - startTime;
+      remainingTime = Math.max(0, remainingTime - elapsed);
+    }
+
+    function resumeSlider() {
+      if (!isPaused) return;
+      isPaused = false;
+      if (remainingTime > 50) {
+        const fill = fillEls[currentSlide];
+        if (fill) void fill.offsetWidth;
+        startSliderTimer(remainingTime);
+      } else {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+
+    function showSlide(index) {
+      const total = galleryImages.length;
+      currentSlide = ((index % total) + total) % total;
+
+      const thumbBtns = document.querySelectorAll('.thumb-btn');
+
+      clearTimeout(swapTimeout);
+      mainImgEl.style.opacity = 0;
+      swapTimeout = setTimeout(() => {
+        mainImgEl.src = galleryImages[currentSlide];
+        mainImgEl.style.opacity = 1;
+      }, 150);
+
+      thumbBtns.forEach((btn, idx) => {
+        if (idx === currentSlide) {
+          btn.classList.add('ring-2', 'ring-white/90');
+          btn.classList.remove('ring-0', 'opacity-80');
+        } else {
+          btn.classList.remove('ring-2', 'ring-white/90');
+          btn.classList.add('ring-0', 'opacity-80');
+        }
+      });
+
+      restartSliderTimer();
+    }
+
+    function changeImage(index) { showSlide(index); }
+    const enlargeModal = document.getElementById('enlarge-modal');
+    const enlargedImg   = document.getElementById('enlarged-img');
+
+    function openEnlargeModal() {
+      pauseSlider(); // Pauses the timer while viewing
+      enlargedImg.src = galleryImages[currentSlide];
+      enlargeModal.classList.remove('hidden');
+      enlargeModal.classList.add('flex');
+      requestAnimationFrame(() => {
+        enlargeModal.classList.remove('opacity-0');
+        enlargedImg.classList.remove('scale-95');
+        enlargedImg.classList.add('scale-100');
+      });
+      document.body.classList.add('modal-open');
+    }
+
+    function closeEnlargeModal() {
+      enlargeModal.classList.add('opacity-0');
+      enlargedImg.classList.remove('scale-100');
+      enlargedImg.classList.add('scale-95');
+      setTimeout(() => {
+        enlargeModal.classList.add('hidden');
+        enlargeModal.classList.remove('flex');
+        document.body.classList.remove('modal-open');
+        resumeSlider(); // Continues timer where it was
+      }, 200);
+    }
+
+    document.getElementById('slider-prev').addEventListener('click', () => showSlide(currentSlide - 1));
+    document.getElementById('slider-next').addEventListener('click', () => showSlide(currentSlide + 1));
+
+        (function () {
+      const showcase = document.getElementById('showcase');
+      let sx = 0, sy = 0;
+
+      // Touch hold & swipe
+      showcase.addEventListener('touchstart', (e) => {
+        pauseSlider();
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+      }, { passive: true });
+
+      showcase.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          showSlide(dx < 0 ? currentSlide + 1 : currentSlide - 1);
+        } else {
+          resumeSlider();
+        }
+      }, { passive: true });
+
+      showcase.addEventListener('touchcancel', resumeSlider, { passive: true });
+
+      // Mouse click-and-hold or hover
+      showcase.addEventListener('mousedown', pauseSlider);
+      window.addEventListener('mouseup', resumeSlider);
+      showcase.addEventListener('mouseenter', pauseSlider);
+      showcase.addEventListener('mouseleave', resumeSlider);
+    })();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        pauseSlider();
+      } else {
+        resumeSlider();
+      }
+    });
+
+
+    restartSliderTimer();
+
+    // 3. Countdown Timer
+    let totalSeconds = 2 * 3600 + 30 * 60 + 26;
+    const countdownEl = document.getElementById('countdown');
+
+    function updateCountdown() {
+      if (totalSeconds <= 0) {
+        countdownEl.innerText = "00:00:00";
+        return;
+      }
+      totalSeconds--;
+      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      countdownEl.innerText = `${hrs}:${mins}:${secs}`;
+    }
+    setInterval(updateCountdown, 1000);
+
+    // 4. Accordion Toggle
+    function toggleAccordion(bodyId, iconId) {
+      const body = document.getElementById(bodyId);
+      const icon = document.getElementById(iconId);
+      const isHidden = body.classList.contains('hidden');
+
+      if (isHidden) {
+        body.classList.remove('hidden');
+        icon.classList.remove('rotate-180');
+      } else {
+        body.classList.add('hidden');
+        icon.classList.add('rotate-180');
+      }
+    }
+
+    // 5. 4-Review Carousel
+    const reviews = [
+      {
+        author: "Priya S.",
+        date: "13 Oct 2026",
+        stars: 5,
+        avatar: "Rev1.png",
+        text: "Honestly, kaafi helpful tha. Mujhe kuch aise ideas mile jo pehle nahi pata the."
+      },
+      {
+        author: "Sarah K.",
+        date: "09 Oct 2026",
+        stars: 5,
+        avatar: "Rev2.png",
+        text: "Simple aur useful guide hai. Paise kamane ke methods achhe se samjhaye hain"
+      },
+      {
+        author: "Priyansh S.",
+        date: "28 Sep 2026",
+        stars: 4,
+        avatar: "Rev3.png ",
+        text: "Worth it! Ab mujhe better idea hai ki Instagram se earning kaise start karni hai."
+      },
+      {
+        author: "Janvi C.",
+        date: "18 Sep 2026",
+        stars: 5,
+        avatar: "Rev4.png",
+        text: "Content kaafi useful laga. Beginner hone ke baad bhi easily samajh aa gaya."
+      }
+    ];
+
+    let currentReviewIdx = 0;
+    const reviewCard = document.getElementById('review-card');
+    const authorEl = document.getElementById('review-author');
+    const dateEl = document.getElementById('review-date');
+    const textEl = document.getElementById('review-text');
+    const avatarEl = document.getElementById('review-avatar');
+    const dotsContainer = document.getElementById('review-dots');
+
+    function renderReview(idx) {
+      reviewCard.style.opacity = '0';
+      setTimeout(() => {
+        const item = reviews[idx];
+        authorEl.innerText = item.author;
+        dateEl.innerText = item.date;
+        textEl.innerText = `"${item.text}"`;
+        avatarEl.src = item.avatar;
+        avatarEl.alt = item.author;
+
+        const dots = dotsContainer.children;
+        for (let i = 0; i < dots.length; i++) {
+          if (i === idx) {
+            dots[i].className = "w-6 h-1 bg-zinc-900 rounded-full transition-all";
+          } else {
+            dots[i].className = "w-6 h-1 bg-zinc-200 rounded-full transition-all";
+          }
+        }
+        reviewCard.style.opacity = '1';
+      }, 150);
+    }
+
+    function nextReview() {
+      currentReviewIdx = (currentReviewIdx + 1) % reviews.length;
+      renderReview(currentReviewIdx);
+    }
+
+    function prevReview() {
+      currentReviewIdx = (currentReviewIdx - 1 + reviews.length) % reviews.length;
+      renderReview(currentReviewIdx);
+    }
+
+    let reviewInterval = setInterval(nextReview, 4500);
+
+    function resetReviewTimer() {
+      clearInterval(reviewInterval);
+      reviewInterval = setInterval(nextReview, 4500);
+    }
+
+    const reviewArea = document.getElementById('review-card-container');
+    let startX = 0;
+    let endX = 0;
+
+    reviewArea.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    reviewArea.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+
+    reviewArea.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+    });
+
+    reviewArea.addEventListener('mouseup', (e) => {
+      endX = e.clientX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeDistance = endX - startX;
+      if (Math.abs(swipeDistance) > 40) {
+        if (swipeDistance < 0) {
+          nextReview();
+        } else {
+          prevReview();
+        }
+        resetReviewTimer();
+      }
+    }
+
+    // 6. Links setup
+    document.querySelectorAll('[data-home-link]').forEach(a => { a.href = HOME_URL; });
+
+    (function () {
+      const urls = { '1': RECOMMENDED_PRODUCT_1_URL, '2': RECOMMENDED_PRODUCT_2_URL };
+      document.querySelectorAll('[data-rec-link]').forEach(a => { a.href = urls[a.dataset.recLink] || '#'; });
+    })();
+
+    // 7. Pricing + Upsell + Cart
+    const ORIGINAL_PRICE = Math.round(PRODUCT_PRICE / (1 - DISCOUNT_PERCENT / 100));
+    const formatINR = (n) => '₹' + Number(n).toLocaleString('en-IN');
+    const MAIN_PRODUCT_NAME = document.querySelector('h1').textContent.trim();
+    const MAIN_PRODUCT_IMAGE = "169.png";
+
+    const cart = { main: false, upsell: false };
+
+    function getPurchaseState() {
+      if (!cart.main) return 'initial';
+      return cart.upsell ? 'both' : 'single';
+    }
+
+    const buyBtn        = document.getElementById('buy-btn');
+    const buyBtnLabel   = document.getElementById('buy-btn-label');
+    const priceSingleEl = document.getElementById('price-single');
+    const priceBundleEl = document.getElementById('price-bundle');
+    const overlay       = document.getElementById('upsell-overlay');
+    const cartBtn       = document.getElementById('cart-btn');
+    const cartBadge     = document.getElementById('cart-badge');
+    const cartBackdrop  = document.getElementById('cart-backdrop');
+    const cartDrawer    = document.getElementById('cart-drawer');
+    let lastFocused     = null;
+    let upsellOpen      = false;
+    let cartLastFocused = null;
+
+    document.getElementById('price-current').textContent  = formatINR(PRODUCT_PRICE);
+    document.getElementById('price-original').textContent = formatINR(ORIGINAL_PRICE);
+    document.getElementById('price-badge').textContent    = DISCOUNT_PERCENT + '% OFF';
+
+    const upsellImg = document.getElementById('upsell-image');
+    upsellImg.src = UPSELL_PRODUCT_IMAGE;
+    upsellImg.alt = UPSELL_PRODUCT_NAME;
+    document.getElementById('upsell-title').textContent = UPSELL_PRODUCT_NAME;
+    document.getElementById('upsell-desc').textContent  = UPSELL_PRODUCT_DESCRIPTION;
+    document.getElementById('upsell-price').textContent = '+ ' + formatINR(UPSELL_PRODUCT_PRICE);
+
+    document.getElementById('preview-main-img').src = MAIN_PRODUCT_IMAGE;
+    document.getElementById('preview-main-img').alt = MAIN_PRODUCT_NAME;
+    document.getElementById('preview-main-name').textContent = MAIN_PRODUCT_NAME;
+    document.getElementById('preview-upsell-img').src = UPSELL_PRODUCT_IMAGE;
+    document.getElementById('preview-upsell-img').alt = UPSELL_PRODUCT_NAME;
+    document.getElementById('preview-upsell-name').textContent = UPSELL_PRODUCT_NAME;
+
+    document.getElementById('cart-addon-img').src = UPSELL_PRODUCT_IMAGE;
+    document.getElementById('cart-addon-img').alt = UPSELL_PRODUCT_NAME;
+    document.getElementById('cart-addon-name').textContent = UPSELL_PRODUCT_NAME;
+    document.getElementById('cart-addon-price').textContent = '+ ' + formatINR(UPSELL_PRODUCT_PRICE);
+
+    function updateScrollLock() {
+      const locked = upsellOpen || cartDrawer.classList.contains('is-open');
+      document.body.classList.toggle('modal-open', locked);
+    }
+
+    function openUpsell() {
+      lastFocused = document.activeElement;
+      upsellOpen = true;
+      overlay.classList.add('is-visible');
+      requestAnimationFrame(() => requestAnimationFrame(() => { if (upsellOpen) overlay.classList.add('is-open'); }));
+      updateScrollLock();
+      document.getElementById('upsell-accept').focus({ preventScroll: true });
+    }
+
+    function closeUpsell() {
+      upsellOpen = false;
+      overlay.classList.remove('is-open');
+      updateScrollLock();
+      setTimeout(() => { if (!upsellOpen) overlay.classList.remove('is-visible'); }, 250);
+      if (lastFocused && lastFocused.focus) lastFocused.focus({ preventScroll: true });
+    }
+
+    const previewEl       = document.getElementById('bundle-preview');
+    const previewUpsellEl = document.getElementById('preview-upsell');
+    const previewPlusEl   = document.getElementById('preview-plus');
+
+    function renderPurchase() {
+      const state = getPurchaseState();
+      const hasUpsell = state === 'both';
+
+      if (hasUpsell) {
+        const total = PRODUCT_PRICE + UPSELL_PRODUCT_PRICE;
+        document.getElementById('bundle-total').textContent = formatINR(total);
+        document.getElementById('bundle-breakdown').textContent =
+          `${formatINR(PRODUCT_PRICE)} + ${formatINR(UPSELL_PRODUCT_PRICE)} (${UPSELL_PRODUCT_NAME})`;
+      }
+      priceBundleEl.classList.toggle('hidden', !hasUpsell);
+      priceSingleEl.classList.toggle('hidden', hasUpsell);
+
+      previewEl.classList.toggle('hidden', state === 'initial');
+      previewUpsellEl.classList.toggle('hidden', !hasUpsell);
+      previewPlusEl.classList.toggle('hidden', !hasUpsell);
+
+      buyBtnLabel.textContent =
+        state === 'both'   ? 'BUY NOW BOTH' :
+        state === 'single' ? 'BUY NOW THIS' : 'Buy Now';
+    }
+
+    const cartItemsEl   = document.getElementById('cart-items');
+    const cartEmptyEl   = document.getElementById('cart-empty');
+    const cartFooterEl  = document.getElementById('cart-footer');
+    const cartAddonEl   = document.getElementById('cart-addon');
+    const cartCheckout  = document.getElementById('cart-checkout-btn');
+    let lastCartCount   = 0;
+
+    const REMOVE_ICON = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>';
+
+    function buildCartItem(key, name, price, image, originalPrice) {
+      const li = document.createElement('li');
+      li.className = 'flex items-center gap-3 p-3 bg-zinc-50 border border-zinc-200 rounded-2xl';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200';
+      const img = document.createElement('img');
+      img.src = image; img.alt = name;
+      img.className = 'w-full h-full object-cover object-top';
+      thumb.appendChild(img);
+
+      const info = document.createElement('div');
+      info.className = 'min-w-0 flex-1';
+      const nameEl = document.createElement('p');
+      nameEl.className = 'text-sm font-semibold text-zinc-900 truncate';
+      nameEl.textContent = name;
+      const priceRow = document.createElement('p');
+      priceRow.className = 'mt-0.5 text-sm font-bold text-zinc-900';
+      priceRow.textContent = formatINR(price);
+      if (originalPrice) {
+        const old = document.createElement('span');
+        old.className = 'ml-2 text-xs font-normal text-zinc-400 line-through';
+        old.textContent = formatINR(originalPrice);
+        priceRow.appendChild(old);
+      }
+      info.appendChild(nameEl); info.appendChild(priceRow);
+
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.dataset.remove = key;
+      rm.setAttribute('aria-label', 'Remove ' + name + ' from cart');
+      rm.title = 'Remove';
+      rm.className = 'shrink-0 w-8 h-8 rounded-full text-zinc-400 hover:text-zinc-900 hover:bg-zinc-200 flex items-center justify-center transition';
+      rm.innerHTML = REMOVE_ICON;
+
+      li.appendChild(thumb); li.appendChild(info); li.appendChild(rm);
+      return li;
+    }
+
+    function renderCart() {
+      const count = (cart.main ? 1 : 0) + (cart.upsell ? 1 : 0);
+      const total = (cart.main ? PRODUCT_PRICE : 0) + (cart.upsell ? UPSELL_PRODUCT_PRICE : 0);
+      const state = getPurchaseState();
+
+      cartBadge.textContent = count;
+      cartBadge.classList.toggle('hidden', count === 0);
+      if (count !== lastCartCount && count > 0) {
+        cartBadge.classList.remove('badge-pop');
+        void cartBadge.offsetWidth;
+        cartBadge.classList.add('badge-pop');
+      }
+      lastCartCount = count;
+      cartBtn.setAttribute('aria-label', `Open cart (${count} item${count === 1 ? '' : 's'})`);
+      document.getElementById('cart-count-label').textContent = count ? `(${count})` : '';
+
+      cartItemsEl.textContent = '';
+      if (cart.main)   cartItemsEl.appendChild(buildCartItem('main', MAIN_PRODUCT_NAME, PRODUCT_PRICE, MAIN_PRODUCT_IMAGE, ORIGINAL_PRICE));
+      if (cart.upsell) cartItemsEl.appendChild(buildCartItem('upsell', UPSELL_PRODUCT_NAME, UPSELL_PRODUCT_PRICE, UPSELL_PRODUCT_IMAGE));
+      cartEmptyEl.classList.toggle('hidden', count !== 0);
+
+      cartAddonEl.classList.toggle('hidden', !(cart.main && !cart.upsell));
+
+      cartFooterEl.classList.toggle('hidden', count === 0);
+      document.getElementById('cart-total').textContent = formatINR(total);
+      cartCheckout.textContent = state === 'both' ? 'BUY NOW BOTH' : 'BUY NOW THIS';
+    }
+
+    function renderAll() {
+      renderPurchase();
+      renderCart();
+    }
+
+    function acceptUpsell() {
+      cart.main = true; cart.upsell = true;
+      renderAll(); closeUpsell();
+    }
+    function declineUpsell() {
+      cart.main = true; cart.upsell = false;
+      renderAll(); closeUpsell();
+    }
+    function removeUpsell() {
+      if (!cart.upsell) return;
+      cart.upsell = false;
+      renderAll();
+    }
+    function addUpsell() {
+      if (!cart.main || cart.upsell) return;
+      cart.upsell = true;
+      renderAll();
+    }
+    function removeMain() {
+      cart.main = false; cart.upsell = false;
+      renderAll();
+    }
+
+    function goCheckout() {
+      const state = getPurchaseState();
+      if (state === 'both')        window.location.href = CHECKOUT_URL_BOTH;
+      else if (state === 'single') window.location.href = CHECKOUT_URL_SINGLE;
+    }
+
+    function openCart() {
+      cartLastFocused = document.activeElement;
+      cartBackdrop.classList.add('is-open');
+      cartDrawer.classList.add('is-open');
+      cartDrawer.setAttribute('aria-hidden', 'false');
+      updateScrollLock();
+      document.getElementById('cart-close').focus({ preventScroll: true });
+    }
+    function closeCart() {
+      cartBackdrop.classList.remove('is-open');
+      cartDrawer.classList.remove('is-open');
+      cartDrawer.setAttribute('aria-hidden', 'true');
+      updateScrollLock();
+      if (cartLastFocused && cartLastFocused.focus) cartLastFocused.focus({ preventScroll: true });
+    }
+
+    buyBtn.addEventListener('click', () => {
+      if (getPurchaseState() === 'initial') openUpsell();
+      else goCheckout();
+    });
+
+    document.getElementById('upsell-accept').addEventListener('click', acceptUpsell);
+    document.getElementById('upsell-decline').addEventListener('click', declineUpsell);
+    document.getElementById('upsell-close').addEventListener('click', declineUpsell);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) declineUpsell(); });
+
+    document.getElementById('preview-upsell-remove').addEventListener('click', removeUpsell);
+
+    cartBtn.addEventListener('click', openCart);
+    document.getElementById('cart-close').addEventListener('click', closeCart);
+    cartBackdrop.addEventListener('click', closeCart);
+    document.getElementById('cart-addon-btn').addEventListener('click', addUpsell);
+    cartCheckout.addEventListener('click', goCheckout);
+    cartItemsEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-remove]');
+      if (!btn) return;
+      if (btn.dataset.remove === 'upsell') removeUpsell();
+      else if (btn.dataset.remove === 'main') removeMain();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (upsellOpen) declineUpsell();
+      else if (cartDrawer.classList.contains('is-open')) closeCart();
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
