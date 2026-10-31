@@ -35,15 +35,15 @@
 
   <style>
     /* Remove default blue outline and tap rectangle */
-button, a, [role="button"] {
-  outline: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-}
+    button, a, [role="button"] {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
 
-button:focus, a:focus, [role="button"]:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
+    button:focus, a:focus, [role="button"]:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
 
     /* ==========================================================================
        1. BASE STYLES & TYPOGRAPHY
@@ -154,9 +154,9 @@ button:focus, a:focus, [role="button"]:focus {
       opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s;
     }
     #enlarge-modal {
-  -webkit-backdrop-filter: blur(12px) !important;
-  backdrop-filter: blur(12px) !important;
-}
+      -webkit-backdrop-filter: blur(12px) !important;
+      backdrop-filter: blur(12px) !important;
+    }
 
     .cart-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity .3s ease, visibility 0s; }
     .cart-drawer {
@@ -264,8 +264,9 @@ button:focus, a:focus, [role="button"]:focus {
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 mt-4 items-start">
       
       <!-- Left: Interactive Gallery -->
-      <div class="md:col-span-7 flex flex-col items-center">
-        <div id="showcase" style="aspect-ratio: 4 / 5; width: 100%; min-height: 380px;" class="relative w-full aspect-[4/5] max-h-[620px] rounded-3xl overflow-hidden bg-zinc-200 shadow-sm border border-zinc-100">
+      <div class="md:col-span-7 flex flex-col items-center w-full">
+        <!-- 1:1 Showcase Box (Responsive & proportional across all screen sizes) -->
+        <div id="showcase" style="aspect-ratio: 1 / 1; width: 100%;" class="relative w-full aspect-square rounded-3xl overflow-hidden bg-zinc-200 shadow-sm border border-zinc-100">
 
           <!-- Navigation arrows -->
           <button type="button" id="slider-prev" class="slider-arrow left" aria-label="Previous image">
@@ -281,38 +282,38 @@ button:focus, a:focus, [role="button"]:focus {
             <span id="indicator-1" class="relative overflow-hidden h-1 rounded-full flex-1 max-w-[60px] bg-white/40 backdrop-blur-sm shadow-sm"><span id="slider-fill-1" class="absolute inset-y-0 left-0 w-0 rounded-full bg-white"></span></span>
             <span id="indicator-2" class="relative overflow-hidden h-1 rounded-full flex-1 max-w-[60px] bg-white/40 backdrop-blur-sm shadow-sm"><span id="slider-fill-2" class="absolute inset-y-0 left-0 w-0 rounded-full bg-white"></span></span>
           </div>
-          <!-- Enlarge Button -->
-<button type="button" onclick="openEnlargeModal()" aria-label="Enlarge image" 
-        class="absolute bottom-4 right-4 z-30 w-9 h-9 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center border border-white/20 shadow-md hover:bg-black/70 active:scale-95 transition cursor-pointer pointer-events-auto">
-  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="15 3 21 3 21 9"></polyline>
-    <polyline points="9 21 3 21 3 15"></polyline>
-    <line x1="21" y1="3" x2="14" y2="10"></line>
-    <line x1="3" y1="21" x2="10" y2="14"></line>
-  </svg>
-</button>
 
+          <!-- Enlarge Button -->
+          <button type="button" onclick="openEnlargeModal()" aria-label="Enlarge image" 
+                  class="absolute bottom-4 right-4 z-30 w-9 h-9 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center border border-white/20 shadow-md hover:bg-black/70 active:scale-95 transition cursor-pointer pointer-events-auto">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
 
           <!-- Main Image -->
           <img id="main-product-img" 
                src="Result.png" 
                alt="How to Make Money with Just 500 Followers?" 
                class="w-full h-full object-cover object-top transition-opacity duration-300">
-
-          <!-- Floating quick thumbnails inside lower image card -->
-<div class="absolute bottom-4 inset-x-4 z-20 flex justify-center items-center gap-2">
-  <button onclick="changeImage(0)" class="thumb-btn ring-2 ring-white/90 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
-    <img src="Result.png">
-  </button>
-  <button onclick="changeImage(1)" class="thumb-btn ring-0 opacity-80 hover:opacity-100 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
-    <img src="cover.png">
-  </button>
-  <button onclick="changeImage(2)" class="thumb-btn ring-0 opacity-80 hover:opacity-100 group relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-zinc-100 shadow-md transition transform hover:scale-105 active:scale-95">
-    <img src="aview.png">
-  </button>
-</div>
-
         </div>
+
+        <!-- Thumbnails cleanly below showcase (No overlay, natural layout flow) -->
+        <div class="w-full mt-3 flex justify-center items-center gap-2.5">
+          <button type="button" onclick="changeImage(0)" class="thumb-btn ring-2 ring-zinc-900 group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200 shadow-xs transition transform hover:scale-105 active:scale-95">
+            <img src="Result.png" class="w-full h-full object-cover">
+          </button>
+          <button type="button" onclick="changeImage(1)" class="thumb-btn ring-0 opacity-70 hover:opacity-100 group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200 shadow-xs transition transform hover:scale-105 active:scale-95">
+            <img src="cover.png" class="w-full h-full object-cover">
+          </button>
+          <button type="button" onclick="changeImage(2)" class="thumb-btn ring-0 opacity-70 hover:opacity-100 group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200 shadow-xs transition transform hover:scale-105 active:scale-95">
+            <img src="aview.png" class="w-full h-full object-cover">
+          </button>
+        </div>
+
       </div>
 
       <!-- Right: Product Information & Controls -->
@@ -356,33 +357,32 @@ button:focus, a:focus, [role="button"]:focus {
           </p>
         </div>
 
-        <!-- Buy CTA -->
+        <!-- Buy CTA & Preview Area -->
         <div class="mt-6 flex flex-col">
-          <!-- Bundle preview -->
+          <!-- Bundle preview (visible after upsell interaction) -->
           <div id="bundle-preview" class="hidden mb-4 p-3 bg-white border border-zinc-200 rounded-2xl shadow-xs">
             <div class="flex items-start justify-center gap-3 sm:gap-4">
               <!-- Main product -->
-              <div class="w-20 sm:w-24 min-w-0">
+              <div class="w-24 sm:w-28 min-w-0">
                 <div class="aspect-square rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
                   <img id="preview-main-img" src="" alt="" class="w-full h-full object-cover object-top">
                 </div>
-                <p id="preview-main-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-tight text-center line-clamp-2"></p>
-
+                <!-- Clean wrap so the title never cuts off or gets stuck with "..." -->
+                <p id="preview-main-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-snug text-center break-words"></p>
               </div>
 
               <!-- Plus sign -->
-              <div id="preview-plus" class="hidden self-start mt-7 sm:mt-9 text-zinc-400 text-lg font-bold leading-none select-none">+</div>
+              <div id="preview-plus" class="hidden self-start mt-8 sm:mt-10 text-zinc-400 text-lg font-bold leading-none select-none">+</div>
 
               <!-- Upsell product -->
-              <div id="preview-upsell" class="hidden w-20 sm:w-24 min-w-0 relative">
+              <div id="preview-upsell" class="hidden w-24 sm:w-28 min-w-0 relative">
                 <div class="aspect-square rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
                   <img id="preview-upsell-img" src="" alt="" class="w-full h-full object-cover">
                 </div>
                 <button type="button" id="preview-upsell-remove" aria-label="Remove add-on from bundle" title="Remove" class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[#1A1A1A] hover:bg-black text-white border-2 border-white shadow-md flex items-center justify-center active:scale-90 transition">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
                 </button>
-                <p id="preview-upsell-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-tight text-center line-clamp-2"></p>
-
+                <p id="preview-upsell-name" class="mt-1.5 text-[11px] font-semibold text-zinc-800 leading-snug text-center break-words"></p>
               </div>
             </div>
           </div>
@@ -408,8 +408,7 @@ button:focus, a:focus, [role="button"]:focus {
     </div>
 
     <!-- 3. RATING & REVIEWS SECTION -->
-<div class="mt-4 pt-4 border-t border-zinc-200">
-
+    <div class="mt-4 pt-4 border-t border-zinc-200">
       <h2 class="text-xl font-bold tracking-tight text-zinc-900 mb-8">Rating & Reviews</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
@@ -467,7 +466,7 @@ button:focus, a:focus, [role="button"]:focus {
           <div class="relative bg-white border border-zinc-200 rounded-3xl p-6 sm:p-7 shadow-sm transition-opacity duration-300" id="review-card">
             <div class="flex justify-between items-start">
               <div>
-                <h4 id="review-author" class="font-bold text-sm text-zinc-900">Alex Mathio</h4>
+                <h4 id="review-author" class="font-bold text-sm text-zinc-900">Priya S.</h4>
                 <div id="review-stars" class="flex items-center space-x-1 text-amber-400 text-xs mt-1">
                   <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                 </div>
@@ -476,7 +475,8 @@ button:focus, a:focus, [role="button"]:focus {
             </div>
 
             <p id="review-text" class="mt-4 text-xs sm:text-[13px] text-zinc-600 leading-relaxed font-normal min-h-[52px]">
-              "Vili's dedication to sustainability and ethical practices resonates strongly with today's consumers, positioning the brand as a responsible choice in the fashion world."
+              
+            "Honestly, kaafi helpful tha. Mujhe kuch aise ideas mile jo pehle nahi pata the."
             </p>
 
             <div class="mt-5 flex items-center justify-between">
@@ -601,8 +601,6 @@ button:focus, a:focus, [role="button"]:focus {
           <ul class="space-y-2 text-xs text-zinc-500">
             <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Free eBooks</a></li>
             <li><a href="https://nandekudhe.github.io/Footer/" class="hover:text-zinc-900 transition">Development Tutorial</a></li>
-            
-            
           </ul>
         </div>
       </div>
@@ -632,25 +630,25 @@ button:focus, a:focus, [role="button"]:focus {
     </footer>
 
   </div>
+
   <!-- Enlarge Image Fullscreen Modal -->
-<div id="enlarge-modal" onclick="closeEnlargeModal()" 
-     class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0 cursor-zoom-out">
-  
-  <!-- Close Button -->
-  <button type="button" onclick="closeEnlargeModal()" aria-label="Close enlarged view" 
-          class="absolute top-5 right-5 z-50 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
-    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-  </button>
+  <div id="enlarge-modal" onclick="closeEnlargeModal()" 
+       class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0 cursor-zoom-out">
+    
+    <!-- Close Button -->
+    <button type="button" onclick="closeEnlargeModal()" aria-label="Close enlarged view" 
+            class="absolute top-5 right-5 z-50 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
 
-  <!-- Enlarged Image -->
-  <img id="enlarged-img" src="" alt="Enlarged view" 
-       class="max-w-full max-h-[92vh] object-contain rounded-2xl shadow-2xl transition-transform duration-300 scale-95" 
-       onclick="event.stopPropagation()">
-</div>
-
+    <!-- Enlarged Image -->
+    <img id="enlarged-img" src="" alt="Enlarged view" 
+         class="max-w-full max-h-[92vh] object-contain rounded-2xl shadow-2xl transition-transform duration-300 scale-95" 
+         onclick="event.stopPropagation()">
+  </div>
 
   <!-- Cart Drawer -->
   <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
@@ -735,7 +733,7 @@ button:focus, a:focus, [role="button"]:focus {
 
     const UPSELL_PRODUCT_NAME        = "Want Your First Customer in Just 48 Hours?";
     const UPSELL_PRODUCT_PRICE       = 99;
-    const UPSELL_PRODUCT_IMAGE       = "upsell.png" 
+    const UPSELL_PRODUCT_IMAGE       = "upsell.png";
       
     const UPSELL_PRODUCT_DESCRIPTION = "Learn how to find your first customer in just 2 days with simple steps you can follow, even if you're starting from zero.";
 
@@ -787,7 +785,7 @@ button:focus, a:focus, [role="button"]:focus {
 
     const fillEls = galleryImages.map((_, i) => document.getElementById(`slider-fill-${i}`));
 
-        let isPaused = false;
+    let isPaused = false;
     let startTime = null;
     let remainingTime = SLIDER_INTERVAL_MS;
 
@@ -840,7 +838,6 @@ button:focus, a:focus, [role="button"]:focus {
       }
     }
 
-
     function showSlide(index) {
       const total = galleryImages.length;
       currentSlide = ((index % total) + total) % total;
@@ -856,11 +853,11 @@ button:focus, a:focus, [role="button"]:focus {
 
       thumbBtns.forEach((btn, idx) => {
         if (idx === currentSlide) {
-          btn.classList.add('ring-2', 'ring-white/90');
-          btn.classList.remove('ring-0', 'opacity-80');
+          btn.classList.add('ring-2', 'ring-zinc-900');
+          btn.classList.remove('ring-0', 'opacity-70');
         } else {
-          btn.classList.remove('ring-2', 'ring-white/90');
-          btn.classList.add('ring-0', 'opacity-80');
+          btn.classList.remove('ring-2', 'ring-zinc-900');
+          btn.classList.add('ring-0', 'opacity-70');
         }
       });
 
@@ -899,11 +896,10 @@ button:focus, a:focus, [role="button"]:focus {
     document.getElementById('slider-prev').addEventListener('click', () => showSlide(currentSlide - 1));
     document.getElementById('slider-next').addEventListener('click', () => showSlide(currentSlide + 1));
 
-        (function () {
+    (function () {
       const showcase = document.getElementById('showcase');
       let sx = 0, sy = 0;
 
-      // Touch hold & swipe
       showcase.addEventListener('touchstart', (e) => {
         pauseSlider();
         sx = e.touches[0].clientX;
@@ -922,7 +918,6 @@ button:focus, a:focus, [role="button"]:focus {
 
       showcase.addEventListener('touchcancel', resumeSlider, { passive: true });
 
-      // Mouse click-and-hold or hover
       showcase.addEventListener('mousedown', pauseSlider);
       window.addEventListener('mouseup', resumeSlider);
       showcase.addEventListener('mouseenter', pauseSlider);
@@ -936,7 +931,6 @@ button:focus, a:focus, [role="button"]:focus {
         resumeSlider();
       }
     });
-
 
     restartSliderTimer();
 
