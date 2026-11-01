@@ -189,6 +189,27 @@
     .upsell-overlay.is-open .upsell-card { transform: translateY(0) scale(1); }
     body.modal-open { overflow: hidden; }
   </style>
+
+  <!-- Meta Pixel: Vili -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '39051532881160366');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=39051532881160366&ev=PageView&noscript=1"
+      alt="">
+  </noscript>
+  <!-- End Meta Pixel -->
+
 </head>
 <body class="bg-[#F8F9FA] text-[#1E1E1E]">
 
@@ -238,8 +259,8 @@
 
         <!-- Right Navigation Links -->
         <div class="flex items-center space-x-6">
-          <a href="#" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">About</a>
-          <a href="#" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">FAQs</a>
+          <a href="https://nandekudhe.github.io/Footer/" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">About</a>
+          <a href="https://nandekudhe.github.io/Footer/" class="hidden sm:inline-block text-[14px] font-medium text-zinc-700 hover:text-black transition">FAQs</a>
 
           <!-- Cart icon -->
           <button type="button" id="cart-btn" aria-label="Open cart" class="relative p-2 -mr-2 text-zinc-800 hover:text-black transition">
@@ -1290,8 +1311,45 @@
 
     function goCheckout() {
       const state = getPurchaseState();
-      if (state === 'both')        window.location.href = CHECKOUT_URL_BOTH;
-      else if (state === 'single') window.location.href = CHECKOUT_URL_SINGLE;
+      if (state !== 'both' && state !== 'single') return;
+
+      const checkoutUrl = state === 'both'
+        ? CHECKOUT_URL_BOTH
+        : CHECKOUT_URL_SINGLE;
+      const amount = state === 'both'
+        ? PRODUCT_PRICE + UPSELL_PRODUCT_PRICE
+        : PRODUCT_PRICE;
+
+      // Prevent duplicate checkout events / redirects from rapid taps.
+      if (goCheckout.redirecting) return;
+      goCheckout.redirecting = true;
+
+      const redirect = () => {
+        window.location.href = checkoutUrl;
+      };
+
+      // Track only when the visitor is actually proceeding to Cashfree.
+      if (typeof window.fbq === 'function') {
+        let redirected = false;
+        const safeRedirect = () => {
+          if (redirected) return;
+          redirected = true;
+          redirect();
+        };
+
+        fbq('track', 'InitiateCheckout', {
+          value: amount,
+          currency: 'INR'
+        }, {
+          eventCallback: safeRedirect,
+          event_id: 'checkout_' + Date.now()
+        });
+
+        // Fallback in case the Pixel callback does not return.
+        setTimeout(safeRedirect, 700);
+      } else {
+        redirect();
+      }
     }
 
     function openCart() {
