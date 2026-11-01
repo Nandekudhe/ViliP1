@@ -1320,13 +1320,19 @@
         ? PRODUCT_PRICE + UPSELL_PRODUCT_PRICE
         : PRODUCT_PRICE;
 
-      // Prevent duplicate checkout events / redirects from rapid taps.
+            // Prevent duplicate checkout events / redirects from rapid taps.
       if (goCheckout.redirecting) return;
       goCheckout.redirecting = true;
+
+      // 1.5 second baad lock ko automatically reset kar do bina page refresh kiye
+      setTimeout(() => {
+        goCheckout.redirecting = false;
+      }, 1500);
 
       const redirect = () => {
         window.location.href = checkoutUrl;
       };
+
 
       // Track only when the visitor is actually proceeding to Cashfree.
       if (typeof window.fbq === 'function') {
@@ -1392,13 +1398,19 @@
       else if (btn.dataset.remove === 'main') removeMain();
     });
 
-    document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
       if (upsellOpen) declineUpsell();
       else if (cartDrawer.classList.contains('is-open')) closeCart();
     });
 
+    // Browser ke back button se wapas aane par button ko unlock karega
+    window.addEventListener('pageshow', () => {
+      goCheckout.redirecting = false;
+    });
+
     renderAll();
   </script>
+
 </body>
 </html>
